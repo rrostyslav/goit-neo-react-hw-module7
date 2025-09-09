@@ -3,7 +3,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { Formik, Field } from 'formik';
 import { useDispatch } from 'react-redux';
-import { addContact } from '@/redux/operations';
+import { addContact } from '@/redux/contactsOps';
 import validationSchema from './validation';
 
 export default function ContactForm() {
