@@ -1,35 +1,36 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchContacts } from '@/redux/operations';
+import { selectLoading, selectError } from '@/redux/contactsSlice';
 import ContactForm from '@/components/ContactForm';
 import SearchBox from '@/components/SearchBox';
 import ContactList from '@/components/ContactList';
-import useSearch from '@/hooks/useSearch';
-import usePersistedState from '@/hooks/usePersistedState';
+import { changeFilter } from '@/redux/filtersSlice';
 import css from './App.module.css';
 
 export default function App() {
-  const [contacts, setContacts] = usePersistedState('contacts', []);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
-  const {
-    isSearchMode,
-    searchQuery,
-    setSearchQuery,
-    filtered: filteredContacts,
-  } = useSearch(contacts, (item) => item.name);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-  const handleAddContact = (contact) => {
-    setContacts((prevContacts) => [contact, ...prevContacts]);
-  };
-
-  const handleDelete = (id) => {
-    const updatedContacts = contacts.filter((contact) => contact.id !== id);
-    setContacts(updatedContacts);
+  const handleSearch = (query) => {
+    dispatch(changeFilter(query));
   };
 
   return (
     <div className={css.container}>
       <h1 className={css.title}>Phonebook</h1>
-      <ContactForm onAddContact={handleAddContact} />
-      <SearchBox value={searchQuery} onSearch={setSearchQuery} />
-      <ContactList contacts={isSearchMode ? filteredContacts : contacts} onDelete={handleDelete} />
+      <ContactForm />
+      <SearchBox onSearch={handleSearch} />
+
+      {isLoading && <p>Loading contacts...</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+
+      <ContactList />
     </div>
   );
 }

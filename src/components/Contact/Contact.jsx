@@ -3,7 +3,7 @@ import UserIcon from '@/assets/icons/user.svg?react';
 import PhoneIcon from '@/assets/icons/phone.svg?react';
 import Button from '@/components/Button';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '@/redux/contactsSlice';
+import { deleteContact } from '@/redux/operations';
 
 export default function Contact({ id, name, number }) {
   const dispatch = useDispatch();

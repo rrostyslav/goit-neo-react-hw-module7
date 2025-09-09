@@ -2,9 +2,8 @@ import css from './ContactForm.module.css';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { Formik, Field } from 'formik';
-import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from '@/redux/contactsSlice';
+import { addContact } from '@/redux/operations';
 import validationSchema from './validation';
 
 export default function ContactForm() {
@@ -12,7 +11,6 @@ export default function ContactForm() {
 
   const handleAddContact = ({ name, number }, { resetForm }) => {
     const contact = {
-      id: nanoid(),
       name,
       number,
     };
